@@ -67,6 +67,13 @@ app.get('/leads/edit/:id', async function (req, res) {
     res.send(querydata);
     // console.log(param.id);
 })
+app.put('/leads/edit/:id', async function (req, res) {
+    const param = req.params;
+    const updateData = req.body;
+    const querydata = await client.db('crm').collection('leads').updateOne({ _id: ObjectId(param.id) }, { $set: updateData });
+    res.send(querydata);
+    // console.log(param.id);
+})
 app.post('/leads', async function (req, res) {
     const newLead = req.body;
     const data = await client.db('crm').collection('leads').insertOne(newLead);
