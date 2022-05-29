@@ -10,7 +10,7 @@ dotenv.config();
 // const MONGO_URL = 'mongodb://localhost';
 const MONGO_URL = process.env.MONGO_URL;
 
-const PORT = 5000;
+const PORT = process.env.PORT;
 
 async function createConnection() {
     const client = new MongoClient(MONGO_URL)
