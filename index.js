@@ -50,10 +50,22 @@ app.get('/users/:username', async function (req, res) {
     const querydata = await client.db('crm').collection('users').find({ username: param.username }).toArray();
     res.send(querydata);
 })
+app.put('/users/:username', async function (req, res) {
+    const param = req.params;
+    const updateData = req.body;
+    const querydata = await client.db('crm').collection('users').updateOne({ username: param.username }, { $set: updateData });
+    res.send(querydata);
+    // console.log(param.id);
+})
 app.post('/users', async function (req, res) {
     const newUser = req.body;
     const data = await client.db('crm').collection('users').insertOne(newUser);
     res.send(data);
+})
+app.delete('/users/:username', async function (req, res) {
+    const param = req.params;
+    const querydata = await client.db('crm').collection('users').deleteOne({ username: param.username });
+    res.send(querydata);
 })
 
 // LEADS
@@ -95,6 +107,13 @@ app.get('/services', async function (req, res) {
 app.get('/services/edit/:id', async function (req, res) {
     const services = req.params;
     const querydata = await client.db('crm').collection('services').find({ _id: ObjectId(services.id) }).toArray();
+    res.send(querydata);
+    // console.log(param.id);
+})
+app.put('/services/edit/:id', async function (req, res) {
+    const param = req.params;
+    const updateData = req.body;
+    const querydata = await client.db('crm').collection('services').updateOne({ _id: ObjectId(param.id) }, { $set: updateData });
     res.send(querydata);
     // console.log(param.id);
 })
