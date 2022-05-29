@@ -61,7 +61,7 @@ app.get('/leads', async function (req, res) {
     const data = await client.db('crm').collection('leads').find({}).toArray();
     res.send(data);
 })
-app.get('/leads/:id', async function (req, res) {
+app.get('/leads/edit/:id', async function (req, res) {
     const param = req.params;
     const querydata = await client.db('crm').collection('leads').find({ _id: ObjectId(param.id) }).toArray();
     res.send(querydata);
@@ -71,6 +71,12 @@ app.post('/leads', async function (req, res) {
     const newLead = req.body;
     const data = await client.db('crm').collection('leads').insertOne(newLead);
     res.send(data);
+})
+app.delete('/leads/edit/:id', async function (req, res) {
+    const param = req.params;
+    const querydata = await client.db('crm').collection('leads').deleteOne({ _id: ObjectId(param.id) });
+    res.send(querydata);
+    // console.log(param.id);
 })
 
 
