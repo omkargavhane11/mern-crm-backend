@@ -3,7 +3,7 @@ import express from 'express';
 import { MongoClient } from 'mongodb';
 import dotenv from "dotenv";
 import { ObjectId } from 'mongodb';
-import cors from "cors";
+// import cors from "cors";
 
 const app = express();
 dotenv.config();
