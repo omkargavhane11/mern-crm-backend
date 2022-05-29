@@ -39,7 +39,7 @@ app.use(cors());
 
 // USERS
 app.get('/', function (req, res) {
-    res.send('Hello User, Hope you like our services')
+    res.send('Hello User, Hope you like our CRM services')
 })
 app.get('/users', async function (req, res) {
     const data = await client.db('crm').collection('users').find({}).toArray();
