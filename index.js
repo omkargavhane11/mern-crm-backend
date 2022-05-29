@@ -3,7 +3,7 @@ import express from 'express';
 import { MongoClient } from 'mongodb';
 import dotenv from "dotenv";
 import { ObjectId } from 'mongodb';
-// import cors from "cors";
+import cors from "cors";
 
 const app = express();
 dotenv.config();
@@ -35,7 +35,7 @@ app.use(express.json()); // converts data to json
 
 // third party package - middleware
 //anybody can access this data from API
-// app.use(cors());
+app.use(cors());
 
 // USERS
 app.get('/', function (req, res) {
