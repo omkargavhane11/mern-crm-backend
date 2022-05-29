@@ -85,7 +85,7 @@ app.get('/services', async function (req, res) {
     const data = await client.db('crm').collection('services').find({}).toArray();
     res.send(data);
 })
-app.get('/services/:id', async function (req, res) {
+app.get('/services/edit/:id', async function (req, res) {
     const services = req.params;
     const querydata = await client.db('crm').collection('services').find({ _id: ObjectId(services.id) }).toArray();
     res.send(querydata);
@@ -95,6 +95,12 @@ app.post('/services', async function (req, res) {
     const newLead = req.body;
     const data = await client.db('crm').collection('services').insertOne(newLead);
     res.send(data);
+})
+app.delete('/services/edit/:id', async function (req, res) {
+    const services = req.params;
+    const querydata = await client.db('crm').collection('services').deleteOne({ _id: ObjectId(services.id) });
+    res.send(querydata);
+    // console.log(param.id);
 })
 
 app.listen(PORT, () => console.log(`Started server at ${PORT} 😎`));
