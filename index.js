@@ -96,15 +96,15 @@ app.post('/leads', async function (req, res) {
         text: "New Lead is generated"
     }
     maillist.forEach(function (to, i, array) {
-        details.to = to;
+        details.to = to.mail;
 
         mailTransport.sendMail(details, (err) => {
             if (err) {
                 console.log(err);
             } else {
-                console.log("mail sent to -- " + to);
+                console.log("mail sent to -- " + to.mail);
             }
-            // if (i === maillist.length - 1) { msg.transport.close(); }
+            if (i === maillist.length - 1) { msg.transport.close(); }
         })
     });
 
