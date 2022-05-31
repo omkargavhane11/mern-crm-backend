@@ -4,6 +4,7 @@ import cors from "cors";
 import { MongoClient } from 'mongodb';
 import dotenv from "dotenv";
 import { ObjectId } from 'mongodb';
+import nodemailer from 'nodemailer';
 
 const app = express();
 dotenv.config();
@@ -19,16 +20,6 @@ async function createConnection() {
 }
 const client = await createConnection();
 
-const [users, setUsers] = [
-    {
-        fname: "omkar",
-        lname: "gavhane",
-        email: "ogomkargavhane@gmail.com",
-        password: "let@123",
-        username: "omkar123",
-        contact: 9191919191
-    }
-]
 
 app.use(express.json()); // converts data to json
 
@@ -59,6 +50,7 @@ app.put('/users/:username', async function (req, res) {
 app.post('/users', async function (req, res) {
     const newUser = req.body;
     const data = await client.db('crm').collection('users').insertOne(newUser);
+    console.log(maillist);
     res.send(data);
 })
 app.delete('/users/:username', async function (req, res) {
@@ -88,7 +80,34 @@ app.put('/leads/edit/:id', async function (req, res) {
 app.post('/leads', async function (req, res) {
     const newLead = req.body;
     const data = await client.db('crm').collection('leads').insertOne(newLead);
+    const maillist = await client.db('crm').collection('users').find({ role: "admin" }).toArray();
     res.send(data);
+
+    let mailTransport = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: "ogomkargavhane@gmail.com",
+            pass: "ejbdxuivywhrndbp"
+        }
+    })
+    let details = {
+        from: "ogomkargavhane@gmail.com",
+        subject: "Registration",
+        text: "New Lead is generated"
+    }
+    maillist.forEach(function (to, i, array) {
+        details.to = to;
+
+        mailTransport.sendMail(details, (err) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("mail sent to -- " + to);
+            }
+            // if (i === maillist.length - 1) { msg.transport.close(); }
+        })
+    });
+
 })
 app.delete('/leads/edit/:id', async function (req, res) {
     const param = req.params;
@@ -119,7 +138,38 @@ app.put('/services/edit/:id', async function (req, res) {
 app.post('/services', async function (req, res) {
     const newLead = req.body;
     const data = await client.db('crm').collection('services').insertOne(newLead);
+    const maillist = await client.db('crm').collection('users').find({ role: "admin" });
     res.send(data);
+
+    let mailTransport = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: "ogomkargavhane@gmail.com",
+            pass: "ejbdxuivywhrndbp"
+        }
+    })
+    let details = {
+        from: "ogomkargavhane@gmail.com",
+        subject: "Registration",
+        text: "New Service Request is generated"
+    }
+    maillist.forEach(function (to, i, array) {
+        details.to = to.email;
+
+        mailTransport.sendMail(details, (err) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("mail sent to -- " + to.email);
+            }
+            if (i === maillist.length - 1) { msg.transport.close(); }
+        })
+    });
+
+    // maillist.forEach(function (to) {
+    //     console.log(to.email);
+    // })
+
 })
 app.delete('/services/edit/:id', async function (req, res) {
     const services = req.params;
