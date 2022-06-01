@@ -5,6 +5,8 @@ import { MongoClient } from 'mongodb';
 import dotenv from "dotenv";
 import { ObjectId } from 'mongodb';
 import nodemailer from 'nodemailer';
+import jwt from 'jsonwebtoken';
+import { auth } from './middleware/auth.js';
 
 const app = express();
 dotenv.config();
@@ -176,6 +178,26 @@ app.delete('/services/edit/:id', async function (req, res) {
     const querydata = await client.db('crm').collection('services').deleteOne({ _id: ObjectId(services.id) });
     res.send(querydata);
     // console.log(param.id);
+})
+
+//LOGIN
+
+app.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+    const checkUsername = await client.db('crm').collection('users').findOne({ username: username });
+
+    if (!checkUsername) {
+        res.send({ "error": "invalid credentials" });
+    } else {
+        const storedPassword = checkUsername.password;
+        const isPasswordMatch = password === storedPassword;
+        if (isPasswordMatch) {
+            const token = jwt.sign({ username: checkUsername.username }, process.env.SECRET_KEY);
+            res.send({ "msg": "successfull login", token });
+        } else {
+            res.send({ "error": "invalid credentials" });
+        }
+    }
 })
 
 app.listen(PORT, () => console.log(`Started server at ${PORT} 😎`));
