@@ -52,7 +52,7 @@ app.put('/users/:username', async function (req, res) {
 app.post('/users', async function (req, res) {
     const newUser = req.body;
     const data = await client.db('crm').collection('users').insertOne(newUser);
-    console.log(maillist);
+    // console.log(maillist);
     res.send(data);
 })
 app.delete('/users/:username', async function (req, res) {
