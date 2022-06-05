@@ -7,6 +7,7 @@ import { ObjectId } from 'mongodb';
 import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
 import { auth } from './middleware/auth.js';
+import bcrypt from "bcrypt";
 
 const app = express();
 dotenv.config();
@@ -29,6 +30,13 @@ app.use(express.json()); // converts data to json
 //anybody can access this data from API
 app.use(cors());
 
+async function genPassword(password) {
+    const NO_OF_ROUNDS = 10;
+    const salt = await bcrypt.genSalt(NO_OF_ROUNDS);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    return { hashedPassword };
+}
+
 // USERS
 app.get('/', function (req, res) {
     res.send('Hello User, Hope you like our CRM services')
@@ -49,11 +57,45 @@ app.put('/users/:username', async function (req, res) {
     res.send(querydata);
     // console.log(param.id);
 })
-app.post('/users', async function (req, res) {
-    const newUser = req.body;
+
+// Signup
+app.post('/users/signup', async function (req, res) {
+    // const newUser = req.body;
+    // const data = await client.db('crm').collection('users').insertOne(newUser);
+    // // console.log(maillist);
+    // res.send(data);
+
+    const { username, password, email, fname, lname, contact, role } = req.body;
+    const hashedPassword = await genPassword(password);
+    const findUsername = await client.db('crm').collection('users').findOne({ username: username });
+    const findEmail = await client.db('crm').collection('users').findOne({ email: email });
+    const newUser = { username: username, password: hashedPassword.hashedPassword, email: email, fname: fname, lname: lname, contact: contact, role: role };
     const data = await client.db('crm').collection('users').insertOne(newUser);
-    // console.log(maillist);
-    res.send(data);
+    if (findUsername || findEmail) {
+        res.status(400).send({ "error": "user already exists with this credentials" });
+    } else {
+        res.send(data);
+    }
+
+})
+
+// Login
+app.post('/users/login', async function (req, res) {
+    const { username, password, email } = req.body;
+    const checkUsername = await client.db('crm').collection('users').findOne({ username: username });
+    if (!checkUsername) {
+        res.send({ "error": "invalid credentials - user" });
+    } else {
+        const storedPassword = checkUsername.password;
+        const isPasswordMatch = await bcrypt.compare(password, storedPassword);
+
+        if (isPasswordMatch) {
+            const token = jwt.sign({ id: checkUsername._id }, process.env.SECRET_KEY);
+            res.send({ "msg": "successfull login", token });
+        } else {
+            res.send({ "error": "invalid credentials - pass" });
+        }
+    }
 })
 app.delete('/users/:username', async function (req, res) {
     const param = req.params;
