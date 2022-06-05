@@ -50,23 +50,24 @@ app.get('/users/:username', async function (req, res) {
     const querydata = await client.db('crm').collection('users').find({ username: param.username }).toArray();
     res.send(querydata);
 })
-// app.put('/users/:username', async function (req, res) {
-//     const param = req.params;
-//     const updateData = req.body;
-//     const querydata = await client.db('crm').collection('users').updateOne({ username: param.username }, { $set: updateData });
-//     res.send(querydata);
-//     // console.log(param.id);
-// })
-//  Update password
 app.put('/users/:username', async function (req, res) {
     const param = req.params;
-    const { password } = req.body;
-    const hashedPassword = await genPassword(password);
-    const updateData = { password: hashedPassword.hashedPassword }
+    const updateData = req.body;
     const querydata = await client.db('crm').collection('users').updateOne({ username: param.username }, { $set: updateData });
     res.send(querydata);
-    // console.log(hashedPassword.hashedPassword);
+    // console.log(param.id);
 })
+
+//  Update password
+// app.put('/users/:username', async function (req, res) {
+//     const param = req.params;
+//     const { password } = req.body;
+//     const hashedPassword = await genPassword(password);
+//     const updateData = { password: hashedPassword.hashedPassword }
+//     const querydata = await client.db('crm').collection('users').updateOne({ username: param.username }, { $set: updateData });
+//     res.send(querydata);
+//     // console.log(hashedPassword.hashedPassword);
+// })
 
 // Signup
 app.post('/users', async function (req, res) {
