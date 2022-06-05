@@ -90,23 +90,25 @@ app.post('/users', async function (req, res) {
 })
 // mmm
 // Login
-// app.post('/users/login', async function (req, res) {
-//     const { username, password, email } = req.body;
-//     const checkUsername = await client.db('crm').collection('users').findOne({ username: username });
-//     if (!checkUsername) {
-//         res.send({ "error": "invalid credentials - user" });
-//     } else {
-//         const storedPassword = checkUsername.password;
-//         const isPasswordMatch = await bcrypt.compare(password, storedPassword);
+app.post('/users/login', async function (req, res) {
+    const { username, password, email } = req.body;
+    const checkUsername = await client.db('crm').collection('users').findOne({ username: username });
+    if (!checkUsername) {
+        res.send({ "error": "invalid credentials - user" });
+    } else {
+        // const storedPassword = checkUsername.password;
+        // const isPasswordMatch = await bcrypt.compare(password, storedPassword);
 
-//         if (isPasswordMatch) {
-//             const token = jwt.sign({ id: checkUsername._id }, process.env.SECRET_KEY);
-//             res.send({ "msg": "successfull login", token });
-//         } else {
-//             res.send({ "error": "invalid credentials - pass" });
-//         }
-//     }
-// })
+        const isPasswordMatch = (password == checkUsername.password);
+
+        if (isPasswordMatch) {
+            // const token = jwt.sign({ id: checkUsername._id }, process.env.SECRET_KEY);
+            res.send({ "msg": "successfull login" });
+        } else {
+            res.send({ "error": "invalid credentials - pass" });
+        }
+    }
+})
 app.delete('/users/:username', async function (req, res) {
     const param = req.params;
     const querydata = await client.db('crm').collection('users').deleteOne({ username: param.username });
