@@ -76,39 +76,32 @@ app.post('/users', async function (req, res) {
     // console.log(maillist);
     res.send(data);
 
-    // const { username, password, email, fname, lname, contact, role } = req.body;
-    // const hashedPassword = await genPassword(password);
-    // const findUsername = await client.db('crm').collection('users').findOne({ username: username });
-    // const findEmail = await client.db('crm').collection('users').findOne({ email: email });
-    // const newUser = { username: username, password: hashedPassword.hashedPassword, email: email, fname: fname, lname: lname, contact: contact, role: role };
-    // const data = await client.db('crm').collection('users').insertOne(newUser);
-    // if (findUsername || findEmail) {
-    //     res.status(400).send({ "error": "user already exists with this credentials" });
-    // } else {
-    //     res.send(data);
-    // }
 })
-// mmm
+
 // Login
-// app.post('/users/login', async function (req, res) {
-//     const { username, password, email } = req.body;
-//     const checkUsername = await client.db('crm').collection('users').findOne({ username: username });
-//     if (!checkUsername) {
-//         res.send({ "error": "invalid credentials - user" });
-//     } else {
-//         // const storedPassword = checkUsername.password;
-//         // const isPasswordMatch = await bcrypt.compare(password, storedPassword);
+app.post('/users/login', async function (req, res) {
+    const { username, password } = req.body;
+    const checkUsername = await client.db('crm').collection('users').findOne({ username: username });
+    if (!checkUsername) {
+        res.send({ "error": "invalid credentials - user" });
+        alert("invalid credentials - user")
+    } else {
+        // const storedPassword = checkUsername.password;
+        // const isPasswordMatch = await bcrypt.compare(password, storedPassword);
 
-//         const isPasswordMatch = (password == checkUsername.password);
+        const isPasswordMatch = (password == checkUsername.password);
 
-//         if (isPasswordMatch) {
-//             // const token = jwt.sign({ id: checkUsername._id }, process.env.SECRET_KEY);
-//             res.send({ "msg": "successfull login" });
-//         } else {
-//             res.send({ "error": "invalid credentials - pass" });
-//         }
-//     }
-// })
+        if (isPasswordMatch) {
+            // const token = jwt.sign({ id: checkUsername._id }, process.env.SECRET_KEY);
+            res.send({ "msg": "successfull login" });
+            alert("successfull login")
+        } else {
+            res.send({ "error": "invalid credentials - pass" });
+            alert("invalid credentials - pass")
+        }
+    }
+})
+
 app.delete('/users/:username', async function (req, res) {
     const param = req.params;
     const querydata = await client.db('crm').collection('users').deleteOne({ username: param.username });
