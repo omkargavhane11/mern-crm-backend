@@ -78,7 +78,7 @@ app.post('/users', async function (req, res) {
 
 })
 // Login
-app.post('/users/login', async function (req, res) {
+app.post('/login', async function (req, res) {
     const { username, password } = req.body;
     const checkUsername = await client.db('crm').collection('users').findOne({ username: username });
     if (!checkUsername) {
