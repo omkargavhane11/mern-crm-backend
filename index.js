@@ -83,7 +83,6 @@ app.post('/users/login', async function (req, res) {
     const checkUsername = await client.db('crm').collection('users').findOne({ username: username });
     if (!checkUsername) {
         res.send({ "error": "invalid credentials - user" })
-        alert("invalid credentials - user")
     } else {
         // const storedPassword = checkUsername.password;
         // const isPasswordMatch = await bcrypt.compare(password, storedPassword);
@@ -93,10 +92,8 @@ app.post('/users/login', async function (req, res) {
         if (isPasswordMatch) {
             // const token = jwt.sign({ id: checkUsername._id }, process.env.SECRET_KEY);
             res.send({ "msg": "successfull login" })
-            alert("successfull login")
         } else {
             res.send({ "error": "invalid credentials - pass" })
-            alert("invalid credentials - pass")
         }
     }
 })
