@@ -93,10 +93,10 @@ app.post('/users/login', async function (req, res) {
 
         if (isPasswordMatch) {
             // const token = jwt.sign({ id: checkUsername._id }, process.env.SECRET_KEY);
-            res.send({ "msg": "successfull login" });
+            res.send({ "msg": "successfull login" })
             alert("successfull login")
         } else {
-            res.send({ "error": "invalid credentials - pass" });
+            res.send({ "error": "invalid credentials - pass" })
             alert("invalid credentials - pass")
         }
     }
