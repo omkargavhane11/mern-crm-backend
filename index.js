@@ -77,7 +77,6 @@ app.post('/users', async function (req, res) {
     res.send(data);
 
 })
-//
 // Login
 app.post('/users/login', async function (req, res) {
     const { username, password } = req.body;
