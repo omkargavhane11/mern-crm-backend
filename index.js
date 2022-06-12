@@ -167,7 +167,7 @@ app.post('/leads', async function (req, res) {
             } else {
                 console.log("mail sent to -- " + to.mail);
             }
-            if (i === maillist.length - 1) { msg.transport.close(); }
+            // if (i === maillist.length - 1) { msg.transport.close(); }
         })
     });
 
@@ -225,15 +225,11 @@ app.post('/services', async function (req, res) {
             } else {
                 console.log("mail sent to -- " + to.email);
             }
-            if (i === maillist.length - 1) { msg.transport.close(); }
+            // if (i === maillist.length - 1) { msg.transport.close(); }
         })
     });
-
-    // maillist.forEach(function (to) {
-    //     console.log(to.email);
-    // })
-
 })
+
 app.delete('/services/edit/:id', async function (req, res) {
     const services = req.params;
     const querydata = await client.db('crm').collection('services').deleteOne({ _id: ObjectId(services.id) });
