@@ -143,7 +143,7 @@ app.put('/leads/edit/:id', async function (req, res) {
 app.post('/leads', async function (req, res) {
     const newLead = req.body;
     const data = await client.db('crm').collection('leads').insertOne(newLead);
-    const maillist = await client.db('crm').collection('users').find({ role: "admin" }).toArray();
+    const maillist = await client.db('crm').collection('users').find({ $or: [{ role: "admin" }, { role: "manager" }] }).toArray();
     res.send(data);
 
     let mailTransport = nodemailer.createTransport({
@@ -201,7 +201,7 @@ app.put('/services/edit/:id', async function (req, res) {
 app.post('/services', async function (req, res) {
     const newLead = req.body;
     const data = await client.db('crm').collection('services').insertOne(newLead);
-    const maillist = await client.db('crm').collection('users').find({ role: "admin" });
+    const maillist = await client.db('crm').collection('users').find({ $or: [{ role: "admin" }, { role: "manager" }] });
     res.send(data);
 
     let mailTransport = nodemailer.createTransport({
