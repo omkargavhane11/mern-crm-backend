@@ -126,9 +126,41 @@ app.get('/login', async function (req, res) {
 app.post('/verifyemail', async function (req, res) {
     try {
         const getUser = await client.db('crm').collection('users').findOne({ email: req.body.email });
-        getUser ? res.send(true) : res.send(false)
+        if (getUser) {
+
+            let something = (Math.random().toString(36).replace(/[^a-z]+/g, ''))
+            let mailTransport = nodemailer.createTransport({
+                service: "gmail",
+                auth: {
+                    user: "ogomkargavhane@gmail.com",
+                    pass: "ejbdxuivywhrndbp"
+                }
+            })
+            let details = {
+                from: "ogomkargavhane@gmail.com",
+                subject: "Reset Password Code",
+                to: getUser.email,
+                text: something
+            }
+            // maillist.forEach(function (to, i, array) {
+            //     details.to = to.email;
+
+            mailTransport.sendMail(details, (err) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log("mail sent to -- " + to.email);
+                }
+                // if (i === maillist.length - 1) { msg.transport.close() }
+            })
+
+            res.send({ message: true, username: getUser.username, tempToken: something })
+            // })
+        } else {
+            res.send({ message: false })
+        }
     } catch (err) {
-        res.send(false)
+        res.send({ message: false })
     }
 })
 
