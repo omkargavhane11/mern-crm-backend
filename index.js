@@ -59,6 +59,12 @@ app.put('/users/:username', async function (req, res) {
     // console.log(param.id);
 })
 
+app.delete('/users/:username', async function (req, res) {
+    const param = req.params;
+    const querydata = await client.db('crm').collection('users').deleteOne({ username: param.username });
+    res.send(querydata);
+})
+
 //  Update password
 // app.put('/users/:username', async function (req, res) {
 //     const param = req.params;
@@ -116,11 +122,17 @@ app.get('/login', async function (req, res) {
 
 })
 
-app.delete('/users/:username', async function (req, res) {
-    const param = req.params;
-    const querydata = await client.db('crm').collection('users').deleteOne({ username: param.username });
-    res.send(querydata);
+// Verify email is registered or not
+app.post('/verifyemail', async function (req, res) {
+    try {
+        const getUser = await client.db('crm').collection('users').findOne({ email: req.body.email });
+        getUser ? res.send(true) : res.send(false)
+    } catch (err) {
+        res.send(false)
+    }
 })
+
+
 
 // LEADS
 app.get('/leads', async function (req, res) {
