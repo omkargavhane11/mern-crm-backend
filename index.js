@@ -14,6 +14,7 @@ dotenv.config();
 // const MONGO_URL = 'mongodb://localhost';
 const MONGO_URL = process.env.MONGO_URL;
 const PORT = process.env.PORT || 5000;
+const SECRET_KEY = process.env.SECRET_KEY;
 // 
 async function createConnection() {
     const client = new MongoClient(MONGO_URL)
@@ -90,7 +91,7 @@ app.post('/login', async function (req, res) {
         const isPasswordMatch = (password == checkUsername.password)
 
         if (isPasswordMatch) {
-            const token = jwt.sign({ id: checkUsername._id }, process.env.SECRET_KEY);
+            const token = jwt.sign({ id: checkUsername._id }, SECRET_KEY);
             res.send({ checkUsername })
         } else {
             res.send(false)
