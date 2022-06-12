@@ -130,7 +130,7 @@ app.post('/verifyemail', async function (req, res) {
     // const updateData = { tempToken: something }
     // const sendverifationCodeToDB = await client.db('crm').collection('users').updateOne({ _id: ObjectId(getUser._id) }, { $set: updateData });
     // getUser ?  res.send({ message: true, username: getUser.username, tempToken: something }) : res.send({ message: false });
-    getUser ? res.send(true) : res.send({ message: false });
+    getUser ? res.send({ message: true }) : res.send({ message: false });
 
 })
 
