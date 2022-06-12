@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 import { ObjectId } from 'mongodb';
 import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
-import { auth } from './middleware/auth.js';
+// import { auth } from './middleware/auth.js';
 import bcrypt from "bcrypt";
 
 const app = express();
@@ -149,7 +149,7 @@ app.post('/verifyemail', async function (req, res) {
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log("mail sent to -- " + to.email);
+                    console.log("mail sent ✅");
                 }
                 // if (i === maillist.length - 1) { msg.transport.close() }
             })
