@@ -124,13 +124,12 @@ app.get('/login', async function (req, res) {
 
 // Verify email is registered or not
 app.post('/verifyemail', async function (req, res) {
-
-    const getUser = await client.db('crm').collection('users').findOne({ email: req.body.email });
-    // const something = (Math.random().toString(36).replace(/[^a-z]+/g, ''))
-    // const updateData = { tempToken: something }
-    // const sendverifationCodeToDB = await client.db('crm').collection('users').updateOne({ _id: ObjectId(getUser._id) }, { $set: updateData });
-    // getUser ?  res.send({ message: true, username: getUser.username, tempToken: something }) : res.send({ message: false });
-    getUser ? res.send({ message: true }) : res.send({ message: false });
+    try {
+        const getUser = await client.db('crm').collection('users').findOne({ email: req.body.email });
+        getUser ? res.send(true) : res.send(false)
+    } catch (err) {
+        res.send(false)
+    }
 
 })
 
