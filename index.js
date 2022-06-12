@@ -167,7 +167,7 @@ app.post('/leads', async function (req, res) {
             } else {
                 console.log("mail sent to -- " + to.mail);
             }
-            // if (i === maillist.length - 1) { msg.transport.close(); }
+            if (i === maillist.length - 1) { msg.transport.close() }
         })
     });
 
@@ -225,7 +225,7 @@ app.post('/services', async function (req, res) {
             } else {
                 console.log("mail sent to -- " + to.email);
             }
-            // if (i === maillist.length - 1) { msg.transport.close(); }
+            if (i === maillist.length - 1) { msg.transport.close() }
         })
     });
 })
