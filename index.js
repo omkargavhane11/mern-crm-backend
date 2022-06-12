@@ -202,7 +202,7 @@ app.post('/services', async function (req, res) {
     const newLead = req.body;
     const data = await client.db('crm').collection('services').insertOne(newLead);
     const maillist = await client.db('crm').collection('users').find({ $or: [{ role: "admin" }, { role: "manager" }] });
-    console.log(maillist);
+    // console.log(maillist);
     res.send(data);
 
     let mailTransport = nodemailer.createTransport({
