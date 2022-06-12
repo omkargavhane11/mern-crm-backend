@@ -128,7 +128,7 @@ app.post('/verifyemail', async function (req, res) {
         const getUser = await client.db('crm').collection('users').findOne({ email: req.body.email });
         getUser ? res.send(true) : res.send(false)
     } catch (err) {
-        res.send(false)
+        res.send(err)
     }
 
 })
