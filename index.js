@@ -143,7 +143,7 @@ app.put('/leads/edit/:id', async function (req, res) {
 app.post('/leads', async function (req, res) {
     const newLead = req.body;
     const data = await client.db('crm').collection('leads').insertOne(newLead);
-    const maillist = await client.db('crm').collection('users').find({ $or: [{ role: "admin" }, { role: "manager" }] }).toArray();
+    const maillist = await client.db('crm').collection('users').find({ $or: [{ role: "admin" }, { role: "manager" }] });
     res.send(data);
 
     let mailTransport = nodemailer.createTransport({
@@ -159,19 +159,19 @@ app.post('/leads', async function (req, res) {
         text: "New Lead is generated"
     }
     maillist.forEach(function (to, i, array) {
-        details.to = to.mail;
+        details.to = to.email;
 
         mailTransport.sendMail(details, (err) => {
             if (err) {
                 console.log(err);
             } else {
-                console.log("mail sent to -- " + to.mail);
+                console.log("mail sent to -- " + to.email);
             }
             if (i === maillist.length - 1) { msg.transport.close() }
         })
     });
-
 })
+
 app.delete('/leads/edit/:id', async function (req, res) {
     const param = req.params;
     const querydata = await client.db('crm').collection('leads').deleteOne({ _id: ObjectId(param.id) });
