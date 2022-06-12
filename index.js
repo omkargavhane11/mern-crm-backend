@@ -109,7 +109,7 @@ app.get('/login', async function (req, res) {
         const username = decode.username
         // const fname = decode.fname
         const checkUsername = await client.db('crm').collection('users').findOne({ username: username });
-        res.send({ fname: checkUsername.fname, username: username })
+        res.send({ fname: checkUsername.fname, username: username, role: checkUsername.role })
     } catch (err) {
         res.send({ error: err.message })
     }
