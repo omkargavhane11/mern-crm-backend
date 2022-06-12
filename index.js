@@ -99,6 +99,22 @@ app.post('/login', async function (req, res) {
     }
 })
 
+// get header data of login
+app.get('/login', async function (req, res) {
+    // const { username, password } = req.body;
+    const token = req.headers["x-access-token"];
+
+    try {
+        const decode = jwt.verify(token, 'some123')
+        const username = decode.username
+        const checkUsername = await client.db('crm').collection('users').findOne({ username: username });
+        res.send({ username: username })
+    } catch (err) {
+        res.send({ error: err.message })
+    }
+
+})
+
 app.delete('/users/:username', async function (req, res) {
     const param = req.params;
     const querydata = await client.db('crm').collection('users').deleteOne({ username: param.username });
