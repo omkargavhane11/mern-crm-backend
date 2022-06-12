@@ -91,7 +91,7 @@ app.post('/login', async function (req, res) {
         const isPasswordMatch = (password == checkUsername.password)
 
         if (isPasswordMatch) {
-            const token = jwt.sign({ id: checkUsername._id }, SECRET_KEY);
+            const token = jwt.sign({ id: checkUsername._id }, 'some123');
             res.send({ checkUsername })
         } else {
             res.send(false)
