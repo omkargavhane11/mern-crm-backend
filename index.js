@@ -124,7 +124,8 @@ app.get('/login', async function (req, res) {
 
 // Verify email is registered or not
 app.post('/verifyemail', async function (req, res) {
-    const getUser = await client.db('crm').collection('users').findOne({ email: req.body.email });
+    const { email } = req.body;
+    const getUser = await client.db('crm').collection('users').findOne({ email: email });
     getUser ? res.send({ msg: true }) : res.send({ msg: false })
 
 })
