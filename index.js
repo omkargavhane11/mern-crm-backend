@@ -129,18 +129,6 @@ app.post('/verifyemail', async function (req, res) {
 
 })
 
-// check
-app.post('/checkemail', async function (req, res) {
-    const { email } = req.body;
-    const checkemail = await client.db('crm').collection('users').findOne({ email: email });
-    if (!checkemail) {
-        res.send({ message: "unsuccessfull" })
-    } else {
-        res.send({ message: "successfull" })
-    }
-})
-
-
 // LEADS
 app.get('/leads', async function (req, res) {
     const data = await client.db('crm').collection('leads').find({}).toArray();
