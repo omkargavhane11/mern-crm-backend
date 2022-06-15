@@ -122,21 +122,20 @@ app.get('/login', async function (req, res) {
 
 })
 
-// Verify email is registered or not
-app.post('/verifyemail', async function (req, res) {
-    const { email } = req.body;
-    const getUser = await client.db('crm').collection('users').findOne({ email: email });
-    getUser ? res.send({ "msg": "yes" }) : res.send({ "msg": "no" })
-    // getUser ? console.log({ "msg": "yes" }) : console.log({ "msg": "no" })
-})
-
 // check email is registered or not
 app.post('/checkemail', async function (req, res) {
     const { email } = req.body;
     const getUser = await client.db('crm').collection('users').findOne({ email: email });
+    getUser ? res.send({ "msg": "yes", "username": getUser.username }) : res.send({ "msg": "no" })
+    // getUser ? console.log({ "msg": "yes" }) : console.log({ "msg": "no" })
+})
+
+// check email is registered or not
+app.post('/verifytoken', async function (req, res) {
+    const { token } = req.body;
+    const getUser = await client.db('crm').collection('users').findOne({ tempToken: token });
     getUser ? res.send({ "msg": "yes" }) : res.send({ "msg": "no" })
     // getUser ? console.log({ "msg": "yes" }) : console.log({ "msg": "no" })
-
 })
 
 // LEADS
