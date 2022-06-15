@@ -134,7 +134,7 @@ app.post('/checkemail', async function (req, res) {
 app.post('/verifytoken', async function (req, res) {
     const { email } = req.body;
     const getUserByEmail = await client.db('crm').collection('users').findOne({ email: email });
-    getUserByEmail ? res.send({ "token": getUserByEmail.tempToken }) : res.send("invalid")
+    getUserByEmail ? res.send({ "token": getUserByEmail.tempToken }) : res.send({ "error": "invalid" })
 })
 
 // LEADS
