@@ -127,6 +127,15 @@ app.post('/verifyemail', async function (req, res) {
     const { email } = req.body;
     const getUser = await client.db('crm').collection('users').findOne({ email: email });
     getUser ? res.send({ "msg": "yes" }) : res.send({ "msg": "no" })
+    // getUser ? console.log({ "msg": "yes" }) : console.log({ "msg": "no" })
+})
+
+// check email is registered or not
+app.post('/checkemail', async function (req, res) {
+    const { email } = req.body;
+    const getUser = await client.db('crm').collection('users').findOne({ email: email });
+    getUser ? res.send({ "msg": "yes" }) : res.send({ "msg": "no" })
+    // getUser ? console.log({ "msg": "yes" }) : console.log({ "msg": "no" })
 
 })
 
