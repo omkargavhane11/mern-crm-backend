@@ -132,10 +132,16 @@ app.post('/checkemail', async function (req, res) {
 
 // check email is registered or not
 app.post('/verifytoken', async function (req, res) {
-    const { token } = req.body;
-    const getUser = await client.db('crm').collection('users').findOne({ tempToken: token });
-    getUser ? res.send({ "msg": "yes" }) : res.send({ "msg": "no" })
-    // getUser ? console.log({ "msg": "yes" }) : console.log({ "msg": "no" })
+    const { code, email } = req.body;
+    const getUserByEmail = await client.db('crm').collection('users').findOne({ email: email });
+
+    if (code == getUserByEmail.tempToken) {
+        res.send({ "msg": "yes" })
+    } else {
+        res.send({ "msg": "no" })
+    }
+
+    // console.log(email);
 })
 
 // LEADS
